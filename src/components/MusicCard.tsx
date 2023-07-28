@@ -22,7 +22,7 @@ export function MusicCard({
   trackCover,
 }: MusicCardProps) {
   return (
-    <Card className="w-1/2 h-[500px] flex flex-col justify-between">
+    <Card className="w-1/2 lg:w-1/2 h-[500px] flex flex-col justify-between">
       <CardHeader>
         <CardTitle>{trackName}</CardTitle>
         <CardDescription>{artistName}</CardDescription>
