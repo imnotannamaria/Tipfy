@@ -32,6 +32,8 @@ export function MusicCard({
           <AspectRatio ratio={10 / 10}>
             <Image
               src={trackCover}
+              width={250}
+              height={250}
               alt=""
               className="rounded-md object-cover"
             />

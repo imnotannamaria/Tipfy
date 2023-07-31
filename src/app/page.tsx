@@ -18,7 +18,10 @@ import { Label } from '@/components/ui/label'
 import { Header } from '@/components/Header'
 import { EmptyMusicCard } from '@/components/EmptyMusicCard'
 import querystring from 'querystring'
-import { apiToken } from '@/lib/api'
+import { apiSearch, apiToken } from '@/lib/api'
+import { Track } from '@/@types/Track'
+import { useState } from 'react'
+import { MusicCard } from '@/components/MusicCard'
 
 const seachSongSchema = z.object({
   username: z
@@ -39,7 +42,13 @@ const seachSongSchema = z.object({
     }),
 })
 
+interface TrackSearch {
+  trackData: Track
+}
+
 export default function Home() {
+  const [trackSearch, setTrackSearch] = useState<TrackSearch>()
+
   const form = useForm<z.infer<typeof seachSongSchema>>({
     resolver: zodResolver(seachSongSchema),
     defaultValues: {
@@ -49,8 +58,6 @@ export default function Home() {
   })
 
   async function onSubmit(values: z.infer<typeof seachSongSchema>) {
-    console.log(values)
-
     const tokenData = {
       grant_type: 'client_credentials',
       client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
@@ -68,7 +75,17 @@ export default function Home() {
         },
       )
 
-      console.log(tokenResponse.data.access_token)
+      const response = await apiSearch.get('/search', {
+        params: {
+          q: values.track,
+          type: 'track',
+        },
+        headers: {
+          Authorization: `Bearer ${tokenResponse.data.access_token}`,
+        },
+      })
+
+      setTrackSearch({ trackData: response.data.tracks.items[0] })
     } catch (error) {
       console.log(error)
     }
@@ -126,7 +143,15 @@ export default function Home() {
 
         {/* RIGHT */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <EmptyMusicCard />
+          {trackSearch ? (
+            <MusicCard
+              trackName={trackSearch.trackData.name}
+              artistName={trackSearch.trackData.artists[0].name}
+              trackCover={trackSearch.trackData.album.images[0].url}
+            />
+          ) : (
+            <EmptyMusicCard />
+          )}
         </div>
       </section>
     </main>
