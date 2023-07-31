@@ -22,6 +22,7 @@ import { apiSearch, apiToken } from '@/lib/api'
 import { Track } from '@/@types/Track'
 import { useState } from 'react'
 import { MusicCard } from '@/components/MusicCard'
+import { LoadingButton } from '@/components/LoadingButton'
 
 const seachSongSchema = z.object({
   username: z
@@ -48,6 +49,7 @@ interface TrackSearch {
 
 export default function Home() {
   const [trackSearch, setTrackSearch] = useState<TrackSearch>()
+  const [waiting, setWaiting] = useState(false)
 
   const form = useForm<z.infer<typeof seachSongSchema>>({
     resolver: zodResolver(seachSongSchema),
@@ -58,6 +60,7 @@ export default function Home() {
   })
 
   async function onSubmit(values: z.infer<typeof seachSongSchema>) {
+    setWaiting(true)
     const tokenData = {
       grant_type: 'client_credentials',
       client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
@@ -85,6 +88,7 @@ export default function Home() {
         },
       })
 
+      setWaiting(false)
       setTrackSearch({ trackData: response.data.tracks.items[0] })
     } catch (error) {
       console.log(error)
@@ -134,9 +138,13 @@ export default function Home() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" variant="secondary">
-                Verificar
-              </Button>
+              {!waiting ? (
+                <Button type="submit" variant="secondary" className="w-full">
+                  Verificar
+                </Button>
+              ) : (
+                <LoadingButton />
+              )}
             </form>
           </Form>
         </div>
