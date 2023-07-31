@@ -17,6 +17,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Header } from '@/components/Header'
 import { EmptyMusicCard } from '@/components/EmptyMusicCard'
+import querystring from 'querystring'
+import { apiToken } from '@/lib/api'
 
 const seachSongSchema = z.object({
   username: z
@@ -46,8 +48,30 @@ export default function Home() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof seachSongSchema>) {
+  async function onSubmit(values: z.infer<typeof seachSongSchema>) {
     console.log(values)
+
+    const tokenData = {
+      grant_type: 'client_credentials',
+      client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
+    }
+
+    try {
+      const tokenResponse = await apiToken.post(
+        '/token',
+        querystring.stringify(tokenData),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
+      )
+
+      console.log(tokenResponse.data.access_token)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
