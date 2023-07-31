@@ -9,7 +9,7 @@ import {
 
 export function EmptyMusicCard() {
   return (
-    <Card className="w-full lg:w-1/2 h-[500px] flex flex-col justify-between">
+    <Card className="w-full md:w-1/2 h-[500px] flex flex-col justify-between">
       <CardHeader>
         <Logo />
       </CardHeader>

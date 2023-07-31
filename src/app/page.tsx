@@ -148,6 +148,7 @@ export default function Home() {
               trackName={trackSearch.trackData.name}
               artistName={trackSearch.trackData.artists[0].name}
               trackCover={trackSearch.trackData.album.images[0].url}
+              trackLink={trackSearch.trackData.external_urls.spotify}
             />
           ) : (
             <EmptyMusicCard />
