@@ -24,6 +24,7 @@ import { useState } from 'react'
 import { MusicCard } from '@/components/MusicCard'
 import { LoadingButton } from '@/components/LoadingButton'
 import { useToast } from '@/components/ui/use-toast'
+import { Switch } from '@/components/ui/switch'
 
 const seachSongSchema = z.object({
   username: z
@@ -42,6 +43,7 @@ const seachSongSchema = z.object({
     .max(50, {
       message: 'A música deve ter no máximo 20 caracteres',
     }),
+  isPublic: z.boolean().default(true),
 })
 
 interface TrackSearch {
@@ -56,6 +58,9 @@ export default function Home() {
 
   const form = useForm<z.infer<typeof seachSongSchema>>({
     resolver: zodResolver(seachSongSchema),
+    defaultValues: {
+      isPublic: true,
+    },
   })
 
   async function onSubmit(values: z.infer<typeof seachSongSchema>) {
@@ -103,6 +108,7 @@ export default function Home() {
         title: 'Ocorreu um erro!',
         description: 'Por favor, tente novamente.',
       })
+
       console.log(error)
     }
   }
@@ -113,11 +119,11 @@ export default function Home() {
 
       <section className="flex h-full w-full items-center justify-center flex-col lg:flex-row gap-8 p-4">
         {/* LEFT */}
-        <div className="w-full lg:w-1/2 flex justify-center">
+        <div className="w-full lg:w-1/2 flex justify-center bg-red-">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-5 w-full md:w-1/2 lg:w-1/3"
+              className="space-y-8 w-full md:w-1/2 "
             >
               <FormField
                 control={form.control}
@@ -153,12 +159,37 @@ export default function Home() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="isPublic"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        Sua indicação pode ser publicada?
+                      </FormLabel>
+                      <FormDescription>
+                        Ao marcar essa opção, sua indicação será listada na
+                        página de indicações
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               {!waiting ? (
                 <Button type="submit" variant="secondary" className="w-full">
                   Verificar
                 </Button>
               ) : (
-                <LoadingButton />
+                <LoadingButton label="Procurando" />
               )}
             </form>
           </Form>
@@ -168,6 +199,8 @@ export default function Home() {
         <div className="w-full lg:w-1/2 flex justify-center">
           {trackSearch ? (
             <MusicCard
+              isPublic={form.watch('isPublic')}
+              indicatorName={form.watch('username')}
               trackName={trackSearch.trackData.name}
               artistName={trackSearch.trackData.artists[0].name}
               trackCover={trackSearch.trackData.album.images[0].url}
