@@ -23,6 +23,7 @@ import { Track } from '@/@types/Track'
 import { useState } from 'react'
 import { MusicCard } from '@/components/MusicCard'
 import { LoadingButton } from '@/components/LoadingButton'
+import { useToast } from '@/components/ui/use-toast'
 
 const seachSongSchema = z.object({
   username: z
@@ -50,6 +51,8 @@ interface TrackSearch {
 export default function Home() {
   const [trackSearch, setTrackSearch] = useState<TrackSearch>()
   const [waiting, setWaiting] = useState(false)
+
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof seachSongSchema>>({
     resolver: zodResolver(seachSongSchema),
@@ -85,8 +88,21 @@ export default function Home() {
       })
 
       setWaiting(false)
+
       setTrackSearch({ trackData: response.data.tracks.items[0] })
+
+      toast({
+        title: 'Música encontrada!',
+        description: 'Verique se é a música que você queria e me indique.',
+      })
     } catch (error) {
+      setWaiting(false)
+
+      toast({
+        variant: 'destructive',
+        title: 'Ocorreu um erro!',
+        description: 'Por favor, tente novamente.',
+      })
       console.log(error)
     }
   }
