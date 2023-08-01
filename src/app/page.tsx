@@ -196,7 +196,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT */}
-        <div className="w-full md:w-3/4 h-full flex justify-center items-center">
+        <div className="w-full lg:w-3/4 h-full flex justify-center items-center">
           {trackSearch ? (
             <MusicCard
               isPublic={form.watch('isPublic')}

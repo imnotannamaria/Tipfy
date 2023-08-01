@@ -52,6 +52,8 @@ export function MusicCard({
       link: trackLink,
       name: indicatorName,
       track: trackName,
+      artist: artistName,
+      cover: trackCover,
     }
 
     const createIndicationInput = {

@@ -4,6 +4,8 @@ export const listAllIndicationsQuery = `{
     link
     name
     track
+    artist
+    cover
   }
 }`
 
@@ -14,6 +16,8 @@ mutation MyMutation($data: IndicationCreateInput!) {
     link
     name
     track
+    artist
+    cover
   }
 }
 `
@@ -23,7 +27,8 @@ export const setIndicationToPublishMutation = `
             id
             link
             name
-            publishedAt
+            artist
+            cover
           }
         }
       `
