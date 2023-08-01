@@ -53,10 +53,6 @@ export default function Home() {
 
   const form = useForm<z.infer<typeof seachSongSchema>>({
     resolver: zodResolver(seachSongSchema),
-    defaultValues: {
-      username: 'Abimaela',
-      track: 'Vampire - Olivia Rodrigo',
-    },
   })
 
   async function onSubmit(values: z.infer<typeof seachSongSchema>) {
@@ -114,7 +110,7 @@ export default function Home() {
                   <FormItem>
                     <FormLabel>Qual seu seu nome?</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="Abimaela" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,7 +124,10 @@ export default function Home() {
                   <FormItem>
                     <FormLabel>Qual música você quer me indicar?</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input
+                        placeholder="Vampire - Olivia Rodrigo"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       A música deve estar no{' '}
