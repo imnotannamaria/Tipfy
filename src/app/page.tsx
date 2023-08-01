@@ -119,11 +119,11 @@ export default function Home() {
 
       <section className="flex h-full w-full items-center justify-center flex-col lg:flex-row gap-8 p-4">
         {/* LEFT */}
-        <div className="w-full lg:w-1/2 flex justify-center bg-red-">
+        <div className="w-full lg:w-3/4 h-full flex justify-center items-center bg-red-">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 w-full md:w-1/2 "
+              className="space-y-8 w-full md:w-1/2"
             >
               <FormField
                 control={form.control}
@@ -196,7 +196,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT */}
-        <div className="w-full lg:w-1/2 flex justify-center">
+        <div className="w-full md:w-3/4 h-full flex justify-center items-center">
           {trackSearch ? (
             <MusicCard
               isPublic={form.watch('isPublic')}

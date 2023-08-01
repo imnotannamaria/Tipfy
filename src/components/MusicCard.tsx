@@ -107,18 +107,18 @@ export function MusicCard({
   }
 
   return (
-    <Card className="w-full md:w-1/2 h-[500px] flex flex-col justify-between">
+    <Card className="w-full md:w-1/2 flex flex-col justify-between">
       <CardHeader>
         <CardTitle>{trackName}</CardTitle>
         <CardDescription>{artistName}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 items-center">
+      <CardContent className="flex flex-col gap-2 items-center">
         <div className="w-[250px]">
-          <AspectRatio ratio={10 / 10}>
+          <AspectRatio ratio={250 / 250}>
             <Image
               src={trackCover}
-              width={500}
-              height={500}
+              width={250}
+              height={250}
               alt=""
               className="rounded-md object-cover"
             />
